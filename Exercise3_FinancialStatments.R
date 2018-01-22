@@ -23,33 +23,52 @@ revenue <- c(14574.49, 7606.46, 8611.41, 9175.41, 8058.65, 8105.44, 11496.28, 97
 expenses <- c(12051.82, 5695.07, 12319.20, 12089.72, 8658.57, 840.20, 3285.73, 5821.12, 6976.93, 16618.61, 10054.37, 3803.96)
 
 # Solution
-
+monthName = c('January',
+              'February',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December')
 # Profit for each month
-profitPerMonth <- revenue - expenses
+profitPerMonth <- round ((revenue - expenses)/1000)
+print(paste("Profit for", monthName, ":", profitPerMonth,'k'))
 
 # Profit after tax for each month (the tax rate is 30%)
 tax <- 0.30
-afterTaxProfit <- (revenue * (1 - tax)) - expenses
+afterTaxProfit <- round(((revenue * (1 - tax)) - expenses)/1000)
+print(paste("Profit after tax in", monthName, ":", afterTaxProfit,'k'))
 
 # profit margin for each month - equals to profit after tax divided by revenue
 profitmargin = (afterTaxProfit / revenue) * 100
-print(paste(round(profitmargin,2), '%'))
+print(paste('Profit Margin for',monthName, 'is',round(profitmargin,2), '%'))
 months <- rep(0,length(revenue))
 counter <- 0
 for(i in afterTaxProfit){
   counter <- counter + 1
   if(i > mean(afterTaxProfit)){
     # good months - where the profit after tax was greater than the mean for the year
-    months[counter] <- 1
+    months[counter] <- counter
     # bad months - where the profit after tax was less than the mean for the year
     }
   else {
     months[counter] <- 0
     }
 }
-
+counter = seq(1,length(revenue))
+good <- counter[months]
+goodMonths <- monthName[good]
 # The best month - where the profit after tax was masx for the year
-bestMonth = max(afterTaxProfit[months])
+
+bestMonth = monthName[ afterTaxProfit == max(afterTaxProfit[good]) ]
 
 # The worst month - wherer the profit after tax was min for the year.
-worstMonth = min(afterTaxProfit[!months])
+bad <- counter[!months]
+badMonths <- monthName[bad]
+worstMonth = monthName[ afterTaxProfit == min(afterTaxProfit[bad]) ]
+
